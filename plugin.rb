@@ -33,7 +33,8 @@ class OAuth2BasicAuthenticator < ::Auth::OAuth2Authenticator
                         opts[:client_options] = {
                           authorize_url: SiteSetting.oauth2_authorize_url,
                           token_url: SiteSetting.oauth2_token_url,
-                          proxy: ENV['http_proxy'] ? URI(ENV['http_proxy']) : nil
+                          proxy: ENV['http_proxy'] ? URI(ENV['http_proxy']) : nil,
+                          no_proxy: ENV['no_proxy'] ? URI(ENV['no_proxy']) : nil
                         }
                         opts[:authorize_options] = SiteSetting.oauth2_authorize_options.split("|").map(&:to_sym)
 
