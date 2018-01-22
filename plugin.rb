@@ -38,7 +38,10 @@ class OAuth2BasicAuthenticator < ::Auth::OAuth2Authenticator
 
                         if SiteSetting.oauth2_send_auth_header?
                           opts[:token_params] = { headers: { 'Authorization' => basic_auth_header } }
-                          log("auth header: #{basic_auth_header}")
+
+                          userlog = basic_auth_header
+
+                          log("auth header: #{userlog}")
                         end
                       }
   end
