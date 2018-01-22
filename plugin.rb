@@ -32,14 +32,13 @@ class OAuth2BasicAuthenticator < ::Auth::OAuth2Authenticator
                         opts[:provider_ignores_state] = false
                         opts[:client_options] = {
                           authorize_url: SiteSetting.oauth2_authorize_url,
-                          token_url: SiteSetting.oauth2_token_url,
-                          proxy: ENV['http_proxy'] ? URI(ENV['http_proxy']) : nil,
-                          no_proxy: ENV['no_proxy'] ? URI(ENV['no_proxy']) : nil
+                          token_url: SiteSetting.oauth2_token_url
                         }
                         opts[:authorize_options] = SiteSetting.oauth2_authorize_options.split("|").map(&:to_sym)
 
                         if SiteSetting.oauth2_send_auth_header?
                           opts[:token_params] = { headers: { 'Authorization' => basic_auth_header } }
+                          log("auth header: #{basic_auth_header}")
                         end
                       }
   end
