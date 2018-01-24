@@ -38,10 +38,6 @@ class OAuth2BasicAuthenticator < ::Auth::OAuth2Authenticator
 
                         if SiteSetting.oauth2_send_auth_header?
                           opts[:token_params] = { headers: { 'Authorization' => basic_auth_header } }
-
-                          userlog = basic_auth_header
-
-                          log("auth header: #{userlog}")
                         end
                       }
   end
@@ -103,6 +99,10 @@ class OAuth2BasicAuthenticator < ::Auth::OAuth2Authenticator
     result.username = user_details[:username]
     result.email = user_details[:email]
     result.email_valid = result.email.present? && SiteSetting.oauth2_email_verified?
+
+    if result.email.present?
+      result.username = result.email.split("@").first
+    end
 
     current_info = ::PluginStore.get("oauth2_basic", "oauth2_basic_user_#{user_details[:user_id]}")
     if current_info
